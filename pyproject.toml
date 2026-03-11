@@ -1,0 +1,14 @@
+[project]
+name = "email-claude-extension"
+version = "1.0.0"
+description = "Email extension for Claude Desktop — wraps ai-zerolab/mcp-email-server"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = [
+    "mcp-email-server>=0.3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -1,0 +1,125 @@
+{
+  "manifest_version": "0.3",
+  "name": "email-mcp",
+  "display_name": "Email for Claude",
+  "version": "1.0.0",
+  "description": "Read, send, and manage email from Claude Desktop via IMAP/SMTP. Wraps ai-zerolab/mcp-email-server.",
+  "long_description": "Gives Claude the ability to interact with your email account. Supports reading emails with filtering (by sender, recipient, subject, date), sending emails with threading support, managing multiple accounts, and downloading attachments. Works with Gmail, Outlook, ProtonMail Bridge, and any standard IMAP/SMTP provider.",
+  "author": {
+    "name": "fingerskier",
+    "url": "https://github.com/fingerskier"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fingerskier/email-claude-extension"
+  },
+  "server": {
+    "type": "python",
+    "entry_point": "server/main.py",
+    "mcp_config": {
+      "command": "uvx",
+      "args": ["mcp-email-server@latest", "stdio"],
+      "env": {
+        "MCP_EMAIL_SERVER_ACCOUNT_NAME": "${user_config.account_name}",
+        "MCP_EMAIL_SERVER_FULL_NAME": "${user_config.full_name}",
+        "MCP_EMAIL_SERVER_EMAIL_ADDRESS": "${user_config.email_address}",
+        "MCP_EMAIL_SERVER_USER_NAME": "${user_config.user_name}",
+        "MCP_EMAIL_SERVER_PASSWORD": "${user_config.password}",
+        "MCP_EMAIL_SERVER_IMAP_HOST": "${user_config.imap_host}",
+        "MCP_EMAIL_SERVER_IMAP_PORT": "${user_config.imap_port}",
+        "MCP_EMAIL_SERVER_SMTP_HOST": "${user_config.smtp_host}",
+        "MCP_EMAIL_SERVER_SMTP_PORT": "${user_config.smtp_port}"
+      }
+    }
+  },
+  "user_config": {
+    "email_address": {
+      "type": "string",
+      "title": "Email Address",
+      "description": "Your email address (e.g. you@gmail.com)",
+      "required": true
+    },
+    "password": {
+      "type": "string",
+      "title": "Password / App Password",
+      "description": "Your email password or app-specific password. For Gmail, generate an App Password at https://myaccount.google.com/apppasswords",
+      "required": true,
+      "sensitive": true
+    },
+    "imap_host": {
+      "type": "string",
+      "title": "IMAP Host",
+      "description": "IMAP server hostname (e.g. imap.gmail.com, outlook.office365.com, 127.0.0.1 for ProtonMail Bridge)",
+      "required": true
+    },
+    "smtp_host": {
+      "type": "string",
+      "title": "SMTP Host",
+      "description": "SMTP server hostname (e.g. smtp.gmail.com, smtp.office365.com, 127.0.0.1 for ProtonMail Bridge)",
+      "required": true
+    },
+    "user_name": {
+      "type": "string",
+      "title": "Login Username",
+      "description": "Login username if different from your email address. Leave blank to use your email address.",
+      "required": false
+    },
+    "full_name": {
+      "type": "string",
+      "title": "Display Name",
+      "description": "Your name as it appears in sent emails (e.g. Jane Doe). Leave blank to use the local part of your email.",
+      "required": false
+    },
+    "account_name": {
+      "type": "string",
+      "title": "Account Name",
+      "description": "A label for this account (e.g. work, personal). Defaults to 'default'.",
+      "required": false,
+      "default": "default"
+    },
+    "imap_port": {
+      "type": "string",
+      "title": "IMAP Port",
+      "description": "IMAP server port. Default: 993 (SSL).",
+      "required": false,
+      "default": "993"
+    },
+    "smtp_port": {
+      "type": "string",
+      "title": "SMTP Port",
+      "description": "SMTP server port. Default: 465 (SSL).",
+      "required": false,
+      "default": "465"
+    }
+  },
+  "tools": [
+    {
+      "name": "add_email_account",
+      "description": "Add or update an email account configuration with IMAP/SMTP server settings"
+    },
+    {
+      "name": "list_email_accounts",
+      "description": "List all configured email accounts"
+    },
+    {
+      "name": "get_emails",
+      "description": "Retrieve emails with filtering by sender, recipient, subject, body, and date range with pagination"
+    },
+    {
+      "name": "get_emails_content",
+      "description": "Fetch full email content for specific email IDs"
+    },
+    {
+      "name": "send_email",
+      "description": "Send an email with support for multiple recipients, CC, BCC, subject, body, and reply threading"
+    },
+    {
+      "name": "download_attachment",
+      "description": "Download an email attachment to a specified path (requires attachment downloads to be enabled)"
+    }
+  ],
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"]
+  }
+}
